@@ -26,6 +26,10 @@
             <input type="number" class="form-control" name="stock" required>
         </div>
         <div class="mb-3">
+            <label class="form-label">Sinopsis</label>
+            <textarea name="sinopsis" class="form-control" rows="4" required></textarea>
+        </div>
+        <div class="mb-3">
             <label class="form-label">Upload Foto</label>
             <input type="file" name="foto" class="form-control">
         </div>

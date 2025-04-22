@@ -38,7 +38,8 @@ class BookController extends Controller
             'author' => $request->author,
             'category' => $request->category,
             'stock' => $request->stock,
-            'foto' => $fotoPath
+            'foto' => $fotoPath,
+            'sinopsis' => $request->sinopsis
         ]);
 
         return redirect()->route('admin.books.index')->with('success', 'Buku berhasil ditambahkan!');
@@ -52,11 +53,12 @@ class BookController extends Controller
     public function update(Request $request, Book $book)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'author' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'stock' => 'required|integer|min:0',
+            'title' => 'required|string',
+            'author' => 'required|string',
+            'category' => 'required|string',
+            'stock' => 'required|integer',
             'foto' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'sinopsis' => 'nullable|string',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -70,6 +72,7 @@ class BookController extends Controller
             'category' => $request->category,
             'stock' => $request->stock,
             'foto' => $book->foto,
+            'sinopsis' => $request->sinopsis
         ]);
 
         return redirect()->route('admin.books.index')->with('success', 'Buku berhasil diperbarui!');
@@ -79,13 +82,14 @@ class BookController extends Controller
     {
         $book = Book::findOrFail($id);
         $book->delete();
+
         return redirect()->route('admin.books.index')->with('success', 'Buku berhasil dihapus!');
     }
 
-    public function show($id)
+    public function show(Book $book, $id)
 {
     $book = Book::findOrFail($id);
-    return view('admin.books.show', compact('book'));
+    return view('books.show', compact('book'));
 }
 
 }

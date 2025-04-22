@@ -1,41 +1,42 @@
-@if(auth()->user()->role == 'visitor')
-    <div class="card mt-4">
-        <div class="card-body">
-            <h5>Berikan Ulasan</h5>
-            <form action="{{ route('books.review.store', $book->id) }}" method="POST">
-                @csrf
-                <div class="mb-3">
-                    <label for="rating" class="form-label">Rating:</label>
-                    <select name="rating" id="rating" class="form-select" required>
-                        <option value="5">⭐⭐⭐⭐⭐ - Sangat Baik</option>
-                        <option value="4">⭐⭐⭐⭐ - Baik</option>
-                        <option value="3">⭐⭐⭐ - Cukup</option>
-                        <option value="2">⭐⭐ - Kurang</option>
-                        <option value="1">⭐ - Buruk</option>
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label for="review" class="form-label">Ulasan:</label>
-                    <textarea name="review" id="review" class="form-control" rows="3" required></textarea>
-                </div>
-                <button type="submit" class="btn btn-primary">Kirim Ulasan</button>
-            </form>
-        </div>
-    </div>
-@endif
+@extends('layouts.app')
 
-@if($book->reviews->count() > 0)
-    <div class="card mt-4">
-        <div class="card-body">
-            <h5>Ulasan Buku</h5>
-            @foreach ($book->reviews as $review)
-                <div class="border p-2 mb-2">
-                    <strong>{{ $review->user->name }}</strong>
-                    <span class="text-warning">({{ str_repeat('⭐', $review->rating) }})</span>
-                    <p>{{ $review->review }}</p>
-                    <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+@section('content')
+    <div class="container py-5">
+        <div class="card shadow-lg">
+            <div class="card-body">
+
+                <div class="mb-4 text-center">
+                    @if($book->foto)
+                        <img src="{{ asset('storage/' . $book->foto) }}" alt="{{ $book->title }}"
+                             class="img-fluid mx-auto d-block" style="max-width: 300px;">
+                    @else
+                        <img src="https://via.placeholder.com/300x450?text=No+Image" alt="No Image"
+                             class="img-fluid mx-auto d-block" style="max-width: 300px;">
+                    @endif
                 </div>
-            @endforeach
+
+
+                <div class="text-start mb-4">
+                    <h5 class="card-title">{{ $book->title }}</h5>
+                    <p class="card-text"><strong>Penulis:</strong> {{ $book->author }}</p>
+                    <p class="card-text"><strong>Kategori:</strong> {{ $book->category }}</p>
+                    <p class="card-text"><strong>Stok:</strong> {{ $book->stock }}</p>
+                </div>
+
+                @if(Auth::user()->role === 'visitor')
+                    <div class="mb-4">
+                        <p><strong>Sinopsis:</strong></p>
+                        <p style="font-size: 14px; color: #555; text-align: justify;">{{ $book->sinopsis }}</p>
+                    </div>
+                @endif
+
+                <div class="mt-4 text-center">
+                    @if(Auth::user()->role === 'visitor')
+                        <a href="{{ route('loans.create') }}" class="btn btn-primary">Pinjam Buku</a>
+                    @endif
+                    <a href="{{ route('visitor.index') }}" class="btn btn-secondary">Kembali ke Daftar Buku</a>
+                </div>
+            </div>
         </div>
     </div>
-@endif
+@endsection

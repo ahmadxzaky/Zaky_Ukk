@@ -17,13 +17,12 @@ class LoanController extends Controller
     {
         $user = auth()->user();
 
-        // Kalau visitor, ambil hanya peminjamannya sendiri
         if ($user->role === 'visitor') {
             $loans = Loan::with('book')
                 ->where('user_id', $user->id)
                 ->get();
         } else {
-            // Kalau admin atau officer, ambil semua data peminjaman
+
             $loans = Loan::with('user', 'book')->get();
         }
 
@@ -33,9 +32,9 @@ class LoanController extends Controller
 
     public function create()
     {
-        $books = Book::where('stock', '>', 0)->get(); // Hanya tampilkan buku dengan stok > 0
+        $books = Book::where('stock', '>', 0)->get();
         if ($books->isEmpty()) {
-            return redirect()->route('books.index')->with('error', 'Tidak ada buku yang tersedia untuk dipinjam.');
+            return redirect()->route('visitor.index')->with('error', 'Tidak ada buku yang tersedia untuk dipinjam.');
         }
         return view('loans.create', compact('books'));
     }
@@ -65,7 +64,7 @@ class LoanController extends Controller
             'status' => 'borrowed',
         ]);
 
-        // Kurangi stok buku
+
         $book->decrement('stock');
 
         return redirect()->route('loans.index')->with('success', 'Buku berhasil dipinjam!');

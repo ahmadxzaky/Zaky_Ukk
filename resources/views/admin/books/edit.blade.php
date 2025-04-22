@@ -22,6 +22,11 @@
             <label for="stock" class="form-label">Stok</label>
             <input type="number" class="form-control" name="stock" value="{{ $book->stock }}" required>
         </div>
+        <div class="mb-3">
+            <label class="form-label">Sinopsis</label>
+            <textarea name="sinopsis" class="form-control" rows="4">{{ $book->sinopsis }}</textarea>
+        </div>
+        
         <button type="submit" class="btn btn-success">Update Buku</button>
         <a href="{{ route('admin.books.index') }}" class="btn btn-secondary">Kembali</a>
     </form>

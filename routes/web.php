@@ -10,7 +10,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\ReviewController;
 
-// AUTHENTICATION
+// auth
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware('auth')->name('dashboard');
@@ -21,14 +21,14 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::get('/register', [AuthController::class, 'showRegisterForm'])->name('register');
 Route::post('/register', [AuthController::class, 'register']);
 
-// ADMIN
+// admin
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'index'])->name('admin.dashboard');
 
-    // Manajemen Buku
-    Route::resource('/books', BookController::class)->names('admin.books');
+    // manajemen buku
+    Route::resource('books', BookController::class)->names('admin.books');
 
-    // Manajemen User
+    // majejemenn user
     Route::resource('/users', UserController::class)->names('admin.users');
     Route::get('/user', [UserController::class, 'index'])->name('admin.user.index');
     Route::get('/user/{user}/edit', [UserController::class, 'edit'])->name('admin.user.edit');
@@ -41,19 +41,19 @@ Route::middleware(['auth', 'role:officer'])->prefix('officers')->group(function 
     Route::put('/{id}', [OfficerController::class, 'update'])->name('officers.update');
     Route::delete('/{id}', [OfficerController::class, 'destroy'])->name('officers.destroy');
 
-    // buku
+    // bukuu
     Route::get('/books', [BookController::class, 'index'])->name('officers.books.index');
+
 });
 
 // pengunnjunga
 Route::middleware(['auth', 'role:visitor'])->prefix('visitor')->group(function () {
     Route::get('/index', [VisitorController::class, 'index'])->name('visitor.index');
-
-    //
+    Route::get('/books/show/{id}', [BookController::class, 'show'])->name('books.show');
     Route::post('/books/{book}/review', [ReviewController::class, 'store'])->name('books.review.store');
 });
 
-// LOAN UMUM (semua role yang sudah login bisa akses)
+
 Route::middleware('auth')->group(function () {
     Route::resource('/loans', LoanController::class)
         ->except(['show']) // Hindari error jika method show tidak tersedia
@@ -66,9 +66,9 @@ Route::middleware('auth')->group(function () {
             'destroy' => 'admin.loans.destroy',
         ]);
 
-    // Kembalikan Buku
+
     Route::put('/loans/{loan}/return', [LoanController::class, 'returnBook'])->name('loans.return.shared');
 
-    // Export PDF
+
     Route::get('/loans/pdf', [LoanController::class, 'exportPdf'])->name('loans.export.pdf');
 });

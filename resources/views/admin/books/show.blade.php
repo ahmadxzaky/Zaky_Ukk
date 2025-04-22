@@ -9,6 +9,7 @@
             <p><strong>Penulis:</strong> {{ $book->author }}</p>
             <p><strong>Kategori:</strong> {{ $book->category }}</p>
             <p><strong>Stok:</strong> {{ $book->stock }}</p>
+            <strong>Sinopsis:</strong> {{ $book->sinopsis }}</p>
             <a href="{{ route('admin.books.index') }}" class="btn btn-secondary">Kembali</a>
         </div>
     </div>

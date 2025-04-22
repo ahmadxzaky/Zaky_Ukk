@@ -8,13 +8,13 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
-    // Tampilkan form login
+
     public function showLoginForm()
     {
         return view('auth.login');
     }
 
-    // Proses login
+
     public function login(Request $request) {
         $credentials = $request->validate([
             'email' => 'required|email',
@@ -26,12 +26,11 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
 
-            // Redirect berdasarkan role
-// Redirect berdasarkan role
+
 if ($user->role === 'admin') {
     $redirectPath = '/admin/dashboard';
 } elseif ($user->role === 'officer') {
-    $redirectPath = '/officers/dashboard'; // fix disini
+    $redirectPath = '/officers/dashboard'; 
 } else {
     $redirectPath = '/visitor/index';
 }
@@ -42,7 +41,7 @@ if ($user->role === 'admin') {
         return redirect($redirectPath);
     }
 
-    // Proses logout
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -51,13 +50,13 @@ if ($user->role === 'admin') {
         return redirect('/login');
     }
 
-    // Tampilkan form register
+
     public function showRegisterForm()
     {
         return view('auth.register');
     }
 
-    // Proses register
+
     public function register(Request $request)
     {
         $request->validate([
@@ -70,7 +69,7 @@ if ($user->role === 'admin') {
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'visitor' // Default role
+            'role' => 'visitor'
         ]);
 
         return redirect()->route('login')->with('success', 'Registrasi berhasil, silakan login!');

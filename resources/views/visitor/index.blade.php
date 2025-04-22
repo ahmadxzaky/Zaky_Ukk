@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container py-y">
+    <div class="container py-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h2 class="text-primary">Dashboard Visitor</h2>
             <div>
@@ -20,6 +20,7 @@
                             <th>Penulis</th>
                             <th>Kategori</th>
                             <th>Stok</th>
+                            <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,10 +30,13 @@
                                 <td>{{ $book->author }}</td>
                                 <td>{{ $book->category }}</td>
                                 <td>{{ $book->stock }}</td>
+                                <td>
+                                    <a href="{{ route('books.show', $book->id) }}" class="btn btn-info btn-sm">Detail</a> 
+                                </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="4" class="text-center text-muted">Tidak ada buku yang tersedia.</td>
+                                <td colspan="5" class="text-center text-muted">Tidak ada buku yang tersedia.</td>
                             </tr>
                         @endforelse
                     </tbody>
@@ -41,6 +45,3 @@
         </div>
     </div>
 @endsection
-
-
-

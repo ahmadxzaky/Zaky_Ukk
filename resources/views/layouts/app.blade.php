@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perpustakaan Digital</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -19,7 +19,7 @@
                             <a href="{{ route('admin.dashboard') }}" class="btn btn-success mb-3">Dashboard</a>
                         @endif
                         @if (auth()->user()->role === 'officer')
-                            <a href="{{ route('officers.index') }}" class="btn btn-success mb-3">Dashboard</a>
+                            <a href="{{ route('officers.dashboard') }}" class="btn btn-success mb-3">Dashboard</a>
                         @endif
                         @if (auth()->user()->role === 'visitor')
                             <a href="{{ route('visitor.index') }}" class="btn btn-success mb-3">Dashboard</a>

@@ -10,11 +10,11 @@ use App\Models\Book;
 class AdminController extends Controller {
     public function index() {
         if (!Auth::check()) {
-            abort(403, 'Unauthorized access'); // User belum login
+            abort(403, 'Unauthorized access'); 
         }
 
         if (Auth::user()->role !== 'admin') {
-            abort(403, 'Access denied'); // Role tidak sesuai
+            abort(403, 'Access denied');
         }
         $users = User::whereIn('role', ['officer'])->get();
         return view('admin.index', compact('users'));
@@ -44,10 +44,8 @@ class AdminController extends Controller {
         $credentials = $request->only('email', 'password');
         $redirectRoute = null;
 
-        // Log kredensial yang diterima
         Log::info('Login attempt with email: ' . $credentials['email']);
 
-        // Periksa apakah pengguna dengan email yang diberikan ada di database
         $user = User::where('email', $credentials['email'])->first();
         if ($user) {
             Log::info('User found: ' . $user->email . ' with role: ' . $user->role);
@@ -58,10 +56,9 @@ class AdminController extends Controller {
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // Log role pengguna
+
             Log::info('User role: ' . Auth::user()->role);
 
-            // Redirect berdasarkan role
             switch (Auth::user()->role) {
                 case 'admin':
                     $redirectRoute = 'admin.dashboard';
@@ -74,7 +71,6 @@ class AdminController extends Controller {
                     break;
             }
         } else {
-            // Log jika kredensial salah
             Log::warning('Login failed for email: ' . $credentials['email']);
         }
 
