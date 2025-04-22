@@ -1,1 +1,1 @@
-<a href="Zaky_Ukk/Perpustakaan_Digital.pdf">PDF Perpustakaan</a>
+<a href="Perpustakaan_Digital.pdf">PDF Perpustakaan</a>
